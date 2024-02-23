@@ -1,0 +1,13 @@
+GET http://localhost:3010/api/v1/users
+
+### Agregar un usuario a la base de datos
+
+POST http://localhost:3010/api/v1/users
+Content-Type: application/json
+
+{
+  "name": "Lia Gutierrez",
+  "email": "lia@gmail.com",
+  "password": "12345",
+  "phone": "3336770125"
+}
