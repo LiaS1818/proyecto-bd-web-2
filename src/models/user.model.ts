@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { User, UserModel } from "../types/user.type"
+const z = require('zod')
 
 const Users = new Schema<User, UserModel>(
   {
@@ -14,16 +15,27 @@ const Users = new Schema<User, UserModel>(
       type: String,
       required: true,
       unique: true,
-      trim: true
+      trim: true,
+      // match: [EMAIL_REGEX, 'Please enter a valid email']
     },
     password: {
       type: String,
-      required: true,
-      unique: false,
-      trim: false
+      required: true
+    },
+    phoneNumber: {
+      type: String,
+      trim: true,
+      // match: [PHONE_NUMBER_REGEX, 'Please enter a valid phone number']
+    },
+    createdAt: {
+      type: Date,
+      default: () => Date.now()
+    },
+    lastModified: {
+      type: Date,
+      default: () => Date.now()
     }
-  },
-  { timestamps: true} //agrega campos de fecha de creacion y modificacion
+  }
 )
 
 export default model('User', Users)

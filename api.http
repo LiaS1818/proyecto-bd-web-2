@@ -1,4 +1,4 @@
-GET http://localhost:3010/api/v1/users
+GET http://localhost:3010/api/v1/users/all
 
 ### Agregar un usuario a la base de datos
 
@@ -6,8 +6,20 @@ POST http://localhost:3010/api/v1/users
 Content-Type: application/json
 
 {
-  "name": "Lia Gutierrez",
-  "email": "lia@gmail.com",
+  "name": "Liagtz",
+  "email": "gtz@gmail.com",
   "password": "12345",
   "phone": "3336770125"
 }
+
+### Recuperar un usuario por id
+GET http://localhost:3010/api/v1/users?email=liaAidee@hotmail.com
+### Autenticacion de Usuarios Login
+
+POST http://localhost:3010/api/v1/auth/login
+Content-Type: application/json
+
+  {
+    "email": "gtz@gmail.com",
+    "password": "12345"
+  }
