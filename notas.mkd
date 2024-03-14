@@ -1,0 +1,11 @@
+Planeador de tareas - Primer parcial
+
+Estructura del usuario
+  - Login ✅
+
+
+Estructura de la tarea
+  - Registrar ✅
+  - Asignar el usuario que la creo: guardar el usuario completo en la tarea ✅
+  - Endpoint que cambie el estado de la tarea  ✅
+  -

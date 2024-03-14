@@ -1,4 +1,4 @@
-import type { Model } from 'mongoose'
+import type { Model, ObjectId } from 'mongoose'
 import type { Request } from 'express'
 
 export type User = {
@@ -9,6 +9,12 @@ export type User = {
   phoneNumber: string
   createdAt?:Date,
   lastModified?: Date
+}
+
+export type JwtRequestType = Request & {
+  user: {
+    sub: ObjectId
+  }
 }
 
 export type UserRequestType = Request & {

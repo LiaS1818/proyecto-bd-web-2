@@ -1,15 +1,25 @@
+import { ObjectId } from 'mongoose'
 import Tasks from '../models/task.model'
-import { Task } from '../types/task.type' //importar modelo y tipo
+import { Task, TaskModel } from '../types/task.type' //importar modelo y tipo
 import boom from '@hapi/boom'
+import { ParseStatus } from 'zod'
 
 class TaskService {
 
   // Crear una tarea
-  async create(task: Task) {
-    const newTask = await Tasks.create(task).catch((error) =>{
+  async create(task: Task, userId: ObjectId) { //objectid se obtine de mongoose
+    const newTask = await Tasks.create({
+      ...task,
+       user: userId
+    }).catch((error) =>{
       console.log('Could not save category', error)
     })
-    return newTask
+    if (!newTask) {
+      // Handle error or return early
+      return null;
+    }
+    const existingTask = await Tasks.findById(newTask._id).populate('user');
+    return existingTask;
   }
 
   async findAll() {
@@ -35,6 +45,21 @@ class TaskService {
     const task = await Tasks.findOne({name}).catch((error) =>{
       errorDB(error)
     })
+  }
+
+  async updateStatus(id: string, status: string, userId: ObjectId){
+    const updateTask =  await Tasks.findByIdAndUpdate(id, {status: status}, {new: true})
+    console.log(updateTask)
+    if(!updateTask){
+      throw boom.notFound('Task not found')
+    }
+
+    const existingTask = await Tasks.findById(updateTask.id).populate({
+      path: 'user',
+      select: '-email -password' // Excluye al email y la contraseña
+    });
+    return existingTask;
+   
   }
 
 }

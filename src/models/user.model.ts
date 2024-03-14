@@ -2,6 +2,8 @@ import { Schema, model } from "mongoose";
 import { User, UserModel } from "../types/user.type"
 const z = require('zod')
 
+export const USER_REFERENCE = 'User'
+
 const Users = new Schema<User, UserModel>(
   {
     name: {
@@ -38,4 +40,4 @@ const Users = new Schema<User, UserModel>(
   }
 )
 
-export default model('User', Users)
+export default model(USER_REFERENCE, Users)
