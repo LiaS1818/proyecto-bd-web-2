@@ -8,7 +8,7 @@ const routerApi = (app) => {
   const router = express.Router()
   app.use('/api/v1', router)
   router.use('/categories', CategoryRouter)
-  router.use('/users', UserRouter)
+  router.use('/user', UserRouter)
   router.use('/auth', AuthRouter)
   router.use('/task', TaskRouter)
 }
