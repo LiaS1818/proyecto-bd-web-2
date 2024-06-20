@@ -62,10 +62,22 @@ class TaskService {
    
   }
 
+   // Método para encontrar una tarea por ID de tarea y ID de usuario
+   async find( user: ObjectId) {
+    try {
+      const task = await Tasks.find({ user: user }).exec();
+      return task;
+    } catch (error) {
+      throw new Error('Error al buscar la tarea: ' + error.message);
+    }
+  }
+
 }
 
 function errorDB(error) {
   console.log('Error while conecting to the DB', error)
 } 
+
+
 
 export default TaskService

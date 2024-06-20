@@ -1,10 +1,11 @@
 import express from "express";
 import { Task } from "../types/task.type";
 import TaskService from "../services/task.service";
-import passport from "passport";
+import passport, { session } from "passport";
 import { JwtRequestType, User} from "../types/user.type";
 import { UserRequestType } from "../types/user.type";
-import { ObjectId } from "mongoose";
+import { ObjectId, Types } from "mongoose";
+import { unknown } from "zod";
 
 const router = express.Router()
 const service = new TaskService()
@@ -24,7 +25,7 @@ router.post(
 )
 
 router.put(
-  '/:taskId/status',
+  '/aupdate/:taskId',
   passport.authenticate('jwt', {session: false}),
   async (req:JwtRequestType, res) => {
     const {user: {sub}} = req
@@ -37,6 +38,33 @@ router.put(
       
   }
 )
+
+// Obtner las tareas del usuairo
+router.get(
+  '/misTasks',
+  passport.authenticate('jwt', {session:false}),
+  async (req:JwtRequestType, res) => {
+    try {
+      const {user: {sub}} = req;
+      if (typeof sub !== 'string') {
+        return res.status(400).json({ message: 'Invalid user ID.' });
+      }
+      const user = new Types.ObjectId(sub)
+      // Buscar tareas que coincidan con el taskId y l id del usuario
+      const task = await service.find( sub as unknown as ObjectId );
+
+      if (!task) {
+        return res.status(404).json({ message: 'No se encontraron tareas para este usuario.', sub: user });
+      }
+
+      // Responder con la tarea encontrada
+      res.json(task);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error al obtener la tarea.' });
+    }
+  }
+);
 
 router.get('/',
   passport.authenticate('jwt', {session: false}),
